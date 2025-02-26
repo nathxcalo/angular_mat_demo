@@ -2,11 +2,13 @@
       <h1>Angular Material / Reactive Form</h1>
       <form [formGroup]="formdata" (ngSubmit)="onClickSubmit(formdata.value)">
       
+          <!-- Username -->
           <mat-form-field appearance="fill"> 
               <mat-label>Username</mat-label> 
               <input matInput placeholder="Enter Text" formControlName="userName"> 
           </mat-form-field>
-      
+  
+          <!-- Email -->
           <mat-form-field appearance="fill"> 
               <mat-label>Email</mat-label> 
               <input matInput type="email" placeholder="Enter Email" formControlName="email"> 
@@ -14,15 +16,17 @@
                   Email is required and must be a valid email. 
               </mat-error> 
           </mat-form-field>
-      
+  
+          <!-- Password -->
           <mat-form-field appearance="fill"> 
               <mat-label>Password</mat-label> 
               <input matInput type="password" placeholder="Enter password" formControlName="password"> 
               <mat-error *ngIf="formdata.controls['password'].invalid && formdata.controls['password'].touched"> 
-                  Password is required and must be at least 8 characters long. 
+                  Password must be alphanumeric, at least 8 characters, and start with a letter. 
               </mat-error> 
           </mat-form-field>
-      
+  
+          <!-- Gender -->
           <div class="radio-group"> 
               <label class="radio-label">Gender</label> 
               <mat-radio-group formControlName="gender" class="gender-radio-group"> 
@@ -31,12 +35,14 @@
                   <mat-radio-button value="other">Other</mat-radio-button> 
               </mat-radio-group> 
           </div>
-      
+  
+          <!-- Address -->
           <mat-form-field appearance="fill"> 
               <mat-label>Address</mat-label> 
               <input matInput placeholder="Enter Address" formControlName="address"> 
           </mat-form-field>
-      
+  
+          <!-- Birth Date -->
           <mat-form-field appearance="fill"> 
               <mat-label>Birth Date</mat-label> 
               <input matInput [matDatepicker]="picker" placeholder="Select a date" formControlName="birthDate"> 
@@ -45,20 +51,29 @@
               <mat-error *ngIf="formdata.get('birthDate')?.hasError('required')"> 
                   Birth date is required. 
               </mat-error> 
+              <mat-error *ngIf="formdata.get('birthDate')?.hasError('age')"> 
+                  You must be born in 2006 or earlier. 
+              </mat-error> 
           </mat-form-field>
-      
+  
+          <!-- Angular Skill Level -->
           <div class="slider-group"> 
               <label class="slider-label">Angular Skill Level: {{ formdata.get('angularSkillLevel')?.value }}</label> 
               <mat-slider [min]="minSkillLevel" [max]="maxSkillLevel" [step]="1" [discrete]="true" formControlName="angularSkillLevel"> 
               </mat-slider> 
           </div>
-      
+  
+          <!-- Light/Dark Mode Toggle -->
+          <mat-slide-toggle formControlName="darkMode" (change)="toggleDarkMode($event)">
+              Toggle Dark Mode
+          </mat-slide-toggle>
+  
           <button mat-raised-button color="primary" type="submit" [disabled]="!formdata.valid"> 
-              Click Here 
+              Submit 
           </button>
       
       </form>
-      
+  
       <p *ngIf="submitted"> 
           You have entered: <br> 
           Username: {{ userName }} <br> 
@@ -67,8 +82,9 @@
           Gender: {{ gender }} <br> 
           Address: {{ address }} <br> 
           Birth Date: {{ birthDate | date: 'shortDate'}} <br> 
-          Angular Skill Level: {{ angularSkillLevel }} 
+          Angular Skill Level: {{ angularSkillLevel }} <br> 
+          Dark Mode: {{ darkMode ? 'Enabled' : 'Disabled' }}
       </p>
-      
-      </div>
-      
+  
+  </div>
+  
